@@ -16,7 +16,6 @@ const Box = ({ bkgdColor, width, height, id, deleteBox }) => {
     const [hover, setHover] = useState(false);
 
     const displayX = (e) => {
-        console.debug(displayX);
         setHover(hover => hover === false ? true : false);
     }
 

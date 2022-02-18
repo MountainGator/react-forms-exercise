@@ -20,7 +20,6 @@ const BoxList = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.debug(handleSubmit);
         addBox({ ...formData, id: myuuid });
     }
 
