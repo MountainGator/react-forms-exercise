@@ -6,14 +6,16 @@ import ToDoItem from "./todo-item";
 
 
 const ToDoList = () => {
-    
+    const INITIAL_TODOS = JSON.parse(localStorage.getItem('todos')) || [];
+
+
     const INITIAL_VALUE = {
         toDoText: '',
         priority: '', 
         id: 'first'
     }
 
-    const [toDos, setToDos] = useState([]);
+    const [toDos, setToDos] = useState(INITIAL_TODOS);
     const [formData, setFormData] = useState(INITIAL_VALUE)
 
     const handleSubmit = (e) => {
@@ -26,11 +28,13 @@ const ToDoList = () => {
         const tarId  = e.target.id;
         const toDoId = document.getElementById(tarId).previousElementSibling.id;
         setToDos(toDos => toDos.filter(t => t.id !== toDoId));
+        localStorage.setItem('todos', JSON.stringify(toDos));
     }
 
     const addToDo = ({toDoText, priority, id}) => {
         const textColor = setPriorityColor(priority);
         setToDos([...toDos, { toDoText, id, textColor}]);
+        localStorage.setItem('todos', JSON.stringify(toDos));
     }
 
     const setPriorityColor = (priority) => {
