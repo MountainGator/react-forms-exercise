@@ -1,5 +1,5 @@
 import NewToDoForm from "./newtodoform";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './todolist.css'
 import ToDoItem from "./todo-item";
@@ -21,6 +21,7 @@ const ToDoList = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         addToDo({ ...formData, id: uuidv4() });
+        setFormData(INITIAL_VALUE);
     }
 
     const deleteToDo = (e) => {
@@ -28,25 +29,21 @@ const ToDoList = () => {
         const tarId  = e.target.id;
         const toDoId = document.getElementById(tarId).previousElementSibling.id;
         setToDos(toDos => toDos.filter(t => t.id !== toDoId));
-        localStorage.setItem('todos', JSON.stringify(toDos));
     }
 
     const addToDo = ({toDoText, priority, id}) => {
         const textColor = setPriorityColor(priority);
         setToDos([...toDos, { toDoText, id, textColor}]);
-        localStorage.setItem('todos', JSON.stringify(toDos));
     }
 
+    useEffect(() => {
+        localStorage.setItem('todos', JSON.stringify(toDos));
+    }, [toDos]);
+
     const setPriorityColor = (priority) => {
-        let textColor = 'to-do-item';
-        
-        if (priority === '1') {
-            textColor = 'to-do-item red';
-        } else if (priority === '2') {
-            textColor = 'to-do-item yellow';
-        } else if (priority === '3') {
-            textColor = 'to-do-item green';
-        }
+        let textColor = priority === '1' ? 'to-do-item red' 
+            : (priority === '2' ? 'to-do-item yellow' 
+            : (priority === '3' ? 'to-do-item green' : 'to-do-item white'));
 
         return textColor;
     }
